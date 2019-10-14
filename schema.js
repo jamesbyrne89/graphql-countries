@@ -9,21 +9,21 @@ const axios = require('axios');
 const CountryType = new GraphQLObjectType({
   name: 'CountryType',
   fields: () => ({
-    name: { type: GraphQLString },
-    native: { type: GraphQLString },
-    emoji: { type: GraphQLString },
-    currency: { type: GraphQLString },
-    languages: {
-      type: GraphQLList(
-        new GraphQLObjectType({
-          name: 'languages',
-          fields: {
-            code: { type: GraphQLString },
-            name: { type: GraphQLString }
-          }
-        })
-      )
-    }
+    name: { type: GraphQLString }
+    // native: { type: GraphQLString },
+    // emoji: { type: GraphQLString },
+    // currency: { type: GraphQLString },
+    // languages: {
+    //   type: GraphQLList(
+    //     new GraphQLObjectType({
+    //       name: 'languages',
+    //       fields: {
+    //         code: { type: GraphQLString },
+    //         name: { type: GraphQLString }
+    //       }
+    //     })
+    //   )
+    // }
   })
 });
 
@@ -33,8 +33,11 @@ const RootQuery = new GraphQLObjectType({
     countries: {
       type: new GraphQLList(CountryType),
       resolve(parent, args) {
-        (async () => {
-          axios.get('https://countries.trevorblades.com').then(res => res.data);
+        return (async () => {
+          const response = await axios.get(
+            'https://restcountries.eu/rest/v2/all'
+          );
+          return response.data;
         })();
       }
     }
