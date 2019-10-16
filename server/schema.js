@@ -1,6 +1,7 @@
 const {
   GraphQLObjectType,
   GraphQLString,
+  GraphQLInt,
   GraphQLList,
   GraphQLSchema
 } = require('graphql');
@@ -9,21 +10,8 @@ const axios = require('axios');
 const CountryType = new GraphQLObjectType({
   name: 'CountryType',
   fields: () => ({
-    name: { type: GraphQLString }
-    // native: { type: GraphQLString },
-    // emoji: { type: GraphQLString },
-    // currency: { type: GraphQLString },
-    // languages: {
-    //   type: GraphQLList(
-    //     new GraphQLObjectType({
-    //       name: 'languages',
-    //       fields: {
-    //         code: { type: GraphQLString },
-    //         name: { type: GraphQLString }
-    //       }
-    //     })
-    //   )
-    // }
+    name: { type: GraphQLString },
+    population: { type: GraphQLInt }
   })
 });
 

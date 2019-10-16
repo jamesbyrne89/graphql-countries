@@ -20,3 +20,17 @@
 .App-link {
   color: #09d3ac;
 }
+
+main {
+  text-align: center;
+  max-width: 1080px;
+  margin: auto;
+}
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  width: 700px;
+  margin: auto;
+}

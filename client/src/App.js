@@ -1,8 +1,16 @@
 import React from 'react';
+import Select from 'react-select';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+const App = () => {
+
+const options = [
+  {value: 'Option one', label: 'Option one'},
+  {value: 'Option two', label: 'Option two'},
+  {value: 'Option three', label: 'Option three'},
+]
+
   return (
     <div className="App">
       <header className="App-header">
@@ -10,15 +18,16 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <main>
+        <h1>Countries</h1>
+      <div className="container">
+        <div><span>What is the</span></div>
+        <Select options={options}/>
+        <div><span>of</span></div>
+        <Select options={options}/>
+      </div>
+      </main>
     </div>
   );
 }
