@@ -28,6 +28,22 @@ const RootQuery = new GraphQLObjectType({
           return response.data;
         })();
       }
+    },
+    country: {
+      type: CountryType,
+      args: {
+        name: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        return (async () => {
+          console.log(args.name);
+          const response = await axios.get(
+            `https://restcountries.eu/rest/v2/name/${args.name}?fullText=true`
+          );
+
+          return response.data;
+        })();
+      }
     }
   })
 });

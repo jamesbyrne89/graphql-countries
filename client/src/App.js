@@ -11,13 +11,20 @@ const client = new ApolloClient({
   uri: 'http://localhost:4000/countries'
 });
 
-const COUNTRIES_QUERY = gql`
+const COUNTRY_NAMES_QUERY = gql`
 {
   countries {
     name
   }
 }
 `
+
+const POPULATION_QUERY = gql`
+{
+  countries {
+    population
+  }
+}`
 
 const App = () => {
 
@@ -33,15 +40,15 @@ const options = [
 
         <main>
           <h1>Countries</h1>
-          <Query query={COUNTRIES_QUERY}>
+          <Query query={COUNTRY_NAMES_QUERY}>
             {({loading, error, data}) => (
               loading ? (<span>loading...</span>) : (
               <div className="container">
 
                 <div><span>What is the</span></div>
-                <Select className="options-dropdown country-property-dropdown" options={data.countries.map(({name}) => ({value: name, label: name}))}/>
-                <div><span>of</span></div>
                 <Select  className="options-dropdown country-name-dropdown" options={options}/>
+                <div><span>of</span></div>
+                <Select className="options-dropdown country-property-dropdown" options={data.countries.map(({name}) => ({value: name, label: name}))}/>
 
               </div>
             ))}
