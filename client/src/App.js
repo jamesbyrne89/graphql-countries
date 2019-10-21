@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import gql from 'graphql-tag';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider, Query } from 'react-apollo';
@@ -12,9 +12,11 @@ const client = new ApolloClient({
 });
 
 const COUNTRIES_QUERY = gql`
-  query countries {
+{
+  countries {
     name
   }
+}
 `
 
 const App = () => {
@@ -27,26 +29,25 @@ const options = [
 
   return (
     <ApolloProvider client={client}>
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-      </header>
-      <main>
-        <h1>Countries</h1>
-      <div className="container">
-        <Query query={COUNTRIES_QUERY}>
-{({loading, error, data}) => console.log(data) || loading && <span>loading...</span>}
-        </Query>
-        <div><span>What is the</span></div>
-        <Select className="options-dropdown country-property-dropdown" options={options}/>
-        <div><span>of</span></div>
-        <Select  className="options-dropdown country-name-dropdown" options={options}/>
+      <div className="App">
+
+        <main>
+          <h1>Countries</h1>
+          <Query query={COUNTRIES_QUERY}>
+            {({loading, error, data}) => (
+              loading ? (<span>loading...</span>) : (
+              <div className="container">
+
+                <div><span>What is the</span></div>
+                <Select className="options-dropdown country-property-dropdown" options={data.countries.map(({name}) => ({value: name, label: name}))}/>
+                <div><span>of</span></div>
+                <Select  className="options-dropdown country-name-dropdown" options={options}/>
+
+              </div>
+            ))}
+          </Query>
+        </main>
       </div>
-      </main>
-    </div>
     </ApolloProvider>
   );
 }
