@@ -10,7 +10,7 @@ const axios = require('axios');
 const CountryType = new GraphQLObjectType({
   name: 'CountryType',
   fields: () => ({
-    name: { type: GraphQLString, defaultValue: 'Australia' },
+    name: { type: GraphQLString },
     population: { type: GraphQLInt }
   })
 });
@@ -36,12 +36,12 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parent, args) {
         return (async () => {
-          console.log(args.name);
           const response = await axios.get(
             `https://restcountries.eu/rest/v2/name/${args.name}`
           );
 
-          return response.data;
+          const [result] = response.data;
+          return result;
         })();
       }
     }
