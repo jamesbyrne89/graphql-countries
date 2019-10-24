@@ -1,9 +1,8 @@
-import React, {Fragment} from 'react';
+import React, {useState} from 'react';
 import gql from 'graphql-tag';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider, Query } from 'react-apollo';
 import Select from 'react-select';
-import logo from './logo.svg';
 import './App.css';
 
 
@@ -18,21 +17,30 @@ const COUNTRY_NAMES_QUERY = gql`
   }
 }
 `
-
 const POPULATION_QUERY = gql`
-{
-  countries {
+query country($name: String!) {
+  country(name: $name) {
     population
   }
 }`
 
 const App = () => {
+  
+  const [variable, setVariable] = useState(null);
+  const [country, setCountry] = useState(null);
+  const [result, setResult] = useState(null);
+  
+  const options = [
+    {value: 'population', label: 'population'},
+  ]
 
-const options = [
-  {value: 'Option one', label: 'Option one'},
-  {value: 'Option two', label: 'Option two'},
-  {value: 'Option three', label: 'Option three'},
-]
+const handleVariableChange = selectedOption => {
+  setVariable(selectedOption.value)
+}
+
+const handleCountryChange = selectedOption => {
+  setCountry(selectedOption.value)
+}
 
   return (
     <ApolloProvider client={client}>
@@ -40,19 +48,26 @@ const options = [
 
         <main>
           <h1>Countries</h1>
-          <Query query={COUNTRY_NAMES_QUERY}>
-            {({loading, error, data}) => (
-              loading ? (<span>loading...</span>) : (
-              <div className="container">
+            
+                <div className="container">
 
                 <div><span>What is the</span></div>
-                <Select  className="options-dropdown country-name-dropdown" options={options}/>
+              <Query query={POPULATION_QUERY} variables={{ name: country }}>
+              {({loading, error, data}) => (
+              loading ? (<span>loading...</span>) : (
+                console.log(country, data) ||
+                <Select className="options-dropdown country-name-dropdown" value={options[0]} options={options} onChange={handleVariableChange}/>
+              ))}
+                </Query>
                 <div><span>of</span></div>
-                <Select className="options-dropdown country-property-dropdown" options={data.countries.map(({name}) => ({value: name, label: name}))}/>
-
+                <Query query={COUNTRY_NAMES_QUERY}>
+                {({loading, error, data}) => (
+                  loading ? (<span>loading...</span>) : (
+                <Select className="options-dropdown country-property-dropdown" options={data.countries.map(({name}) => ({value: name, label: name}))}  onChange={handleCountryChange}/>
+                ))}
+                </Query>
+                    {/* <output>{result}</output> */}
               </div>
-            ))}
-          </Query>
         </main>
       </div>
     </ApolloProvider>
