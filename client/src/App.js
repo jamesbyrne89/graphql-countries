@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
+import Select from 'react-select';
 import gql from 'graphql-tag';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider, Query } from 'react-apollo';
-import Select from 'react-select';
+import VariableDropdown from './VariableDropdown'
+import CountryNameDropdown from './CountryNameDropdown'
 import './App.css';
 
 
@@ -10,19 +12,6 @@ const client = new ApolloClient({
   uri: 'http://localhost:4000/countries'
 });
 
-const COUNTRY_NAMES_QUERY = gql`
-{
-  countries {
-    name
-  }
-}
-`
-const POPULATION_QUERY = gql`
-query country($name: String!) {
-  country(name: $name) {
-    population
-  }
-}`
 
 const App = () => {
   
@@ -52,20 +41,9 @@ const handleCountryChange = selectedOption => {
                 <div className="container">
 
                 <div><span>What is the</span></div>
-              <Query query={POPULATION_QUERY} variables={{ name: country }}>
-              {({loading, error, data}) => (
-              loading ? (<span>loading...</span>) : (
-                console.log(country, data) ||
-                <Select className="options-dropdown country-name-dropdown" value={options[0]} options={options} onChange={handleVariableChange}/>
-              ))}
-                </Query>
+                <VariableDropdown />
                 <div><span>of</span></div>
-                <Query query={COUNTRY_NAMES_QUERY}>
-                {({loading, error, data}) => (
-                  loading ? (<span>loading...</span>) : (
-                <Select className="options-dropdown country-property-dropdown" options={data.countries.map(({name}) => ({value: name, label: name}))}  onChange={handleCountryChange}/>
-                ))}
-                </Query>
+                <CountryNameDropdown />
                     {/* <output>{result}</output> */}
               </div>
         </main>
