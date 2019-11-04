@@ -8,10 +8,10 @@ import './App.css';
 
 
 const App = () => {
-  const useCombinedQueries = (name) => {
-    const [variable, setVariable] = useState(null);
+  const useCombinedQueries = (name, varName) => {
+    const [variable, setVariable] = useState(varName);
     const [selectedCountry, setSelectedCountry] = useState('');
-    const variableQuery = useQuery(queries.POPULATION_QUERY, {variables: {
+    const variableQuery = useQuery(queries[variable] || queries.population, {variables: {
       name: selectedCountry || 'Australia'
     }});
    
@@ -20,17 +20,17 @@ const App = () => {
     const isLoading = countryNamesQuery.loading;
 
     return {
-      setVariable, setSelectedCountry, isLoading, countryNames: countryNamesQuery.data, result: variableQuery.data, refetch: variableQuery.refetch
+      setVariable, setSelectedCountry, isLoading, countryNames: countryNamesQuery.data, result: variableQuery.data, refetch: variableQuery.refetch, variable
     }
   }
 
-  const {setVariable, selectedCountry, setSelectedCountry, isLoading, countryNames, result, refetch} = useCombinedQueries(null);
+  const {setVariable, selectedCountry, setSelectedCountry, isLoading, countryNames, result, refetch, variable} = useCombinedQueries(null);
 
   useEffect(() => {
     refetch({variables: {name: selectedCountry}})
   }, [refetch, selectedCountry])
 
-
+console.log(Object.keys(queries))
 if (!isLoading) {
   return (
       <div className="App">
@@ -38,11 +38,14 @@ if (!isLoading) {
           <h1>Countries</h1>
                 <div className="container">
                 <div><span>What is the</span></div>
-                <VariableDropdown handleChange={({value}) => setVariable(value)} variable={[{label: 'Australia', value: 'Australia'}]} />
+                <VariableDropdown handleChange={({value}) => setVariable(value)} variables={Object.keys(queries).map(key => ({
+                  label: key,
+                  value: key
+                }))} />
                 <div><span>of</span></div>
                 <CountryNameDropdown handleChange={({value}) => setSelectedCountry(value)} countryNames={countryNames} />
               </div>
-            <output>{result.country.population.toLocaleString()}</output>
+            <output>{result.country[variable]}</output>
         </main>
       </div>
 

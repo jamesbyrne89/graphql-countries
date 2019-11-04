@@ -6,10 +6,10 @@ import Select from 'react-select';
 
 const options = [{label: "Population", value: "Population"}]
 
-const VariableDropdown = ({handleChange, selectedValue, data}) => {
+const VariableDropdown = ({handleChange, selectedValue, variables}) => {
 
     return (
-        <Select className="options-dropdown country-name-dropdown" value={options[0]} options={options} onChange={handleChange}/>
+        <Select className="options-dropdown country-name-dropdown" value={variables[0]} options={variables} onChange={handleChange}/>
     )
 }
 

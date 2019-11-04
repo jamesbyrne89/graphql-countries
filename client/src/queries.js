@@ -15,7 +15,15 @@ query country($name: String!) {
   }
 }`
 
+const CAPITAL_QUERY = gql`
+query country($name: String!) {
+  country(name: $name) {
+    capital
+  }
+}`
+
 export default {
     COUNTRY_NAMES_QUERY,
-    POPULATION_QUERY
+    population: POPULATION_QUERY,
+    capital: CAPITAL_QUERY
 }

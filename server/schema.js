@@ -11,7 +11,8 @@ const CountryType = new GraphQLObjectType({
   name: 'CountryType',
   fields: () => ({
     name: { type: GraphQLString },
-    population: { type: GraphQLInt }
+    population: { type: GraphQLInt },
+    capital: { type: GraphQLString }
   })
 });
 
