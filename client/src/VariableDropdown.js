@@ -8,13 +8,12 @@ import gql from 'graphql-tag';
 
 const options = [{label: "Population", value: "Population"}]
 
-const VariableDropdown = () => {
-
+const VariableDropdown = ({handleChange, selectedValue, data}) => {
 
     return (
-        <div>Loading...</div>
-        // <Select className="options-dropdown country-name-dropdown" value={selectedCountry} options={options} onChange={handleChange}/>
+        <Select className="options-dropdown country-name-dropdown" value={options[0]} options={options} onChange={handleChange}/>
     )
 }
+
 
 export default VariableDropdown;

@@ -12,8 +12,10 @@ console.log(queries.COUNTRY_NAMES_QUERY)
 const App = () => {
   const useCombinedQueries = (name) => {
     const [variable, setVariable] = useState(null);
-    const [selectedCountry, setSelectedCountry] = useState(null);
-    // const variableQuery = useQuery(queries[name] || queries.POPULATION_QUERY);
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const variableQuery = useQuery(queries.POPULATION_QUERY, {variables: {
+      name: selectedCountry || 'Australia'
+    }});
    
     const countryNamesQuery = useQuery(queries.COUNTRY_NAMES_QUERY);
   
@@ -21,11 +23,11 @@ const App = () => {
   console.log(countryNamesQuery)
   console.log(countryNamesQuery.loading)
     return {
-      setVariable, setSelectedCountry, isLoading, countryNames: countryNamesQuery.data
+      setVariable, setSelectedCountry, isLoading, countryNames: countryNamesQuery.data, result: variableQuery.data
     }
   }
 
-  const {setVariable, setSelectedCountry, isLoading, countryNames} = useCombinedQueries(null);
+  const {setVariable, selectedCountry, setSelectedCountry, isLoading, countryNames, result} = useCombinedQueries(null);
   
   const options = [
     {value: 'population', label: 'population'},
@@ -35,9 +37,10 @@ const App = () => {
 
   }, [])
 
-  console.log(countryNames.data)
+  console.log(countryNames)
 
-if (!isLoading)
+
+if (!isLoading) {
   return (
       <div className="App">
 
@@ -47,15 +50,21 @@ if (!isLoading)
                 <div className="container">
 
                 <div><span>What is the</span></div>
-                {/* <VariableDropdown handleChange={({value}) => setVariable(value)} /> */}
+                <VariableDropdown handleChange={({value}) => setVariable(value)} variable={[{label: 'Australia', value: 'Australia'}]} />
                 <div><span>of</span></div>
                 <CountryNameDropdown handleChange={({value}) => setSelectedCountry(value)} countryNames={countryNames} />
-                    {/* <output>{result}</output> */}
               </div>
+                    <output>{result.country.population.toLocaleString()}</output>
         </main>
       </div>
 
   );
+}
+else {
+  if (isLoading) {
+    return <h1>Loading...</h1>
+    }
+}
 }
 
 export default App;
