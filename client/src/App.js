@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import VariableDropdown from './VariableDropdown'
-import CountryNameDropdown from './CountryNameDropdown'
+import VariableDropdown from './components/VariableDropdown'
+import CountryNameDropdown from './components/CountryNameDropdown'
+import Output from './components/Output'
 import queries from './queries'
 import './App.css';
 
@@ -9,16 +10,18 @@ import './App.css';
 
 const App = () => {
   const useCombinedQueries = (name, varName) => {
-    console.log(name)
     const [variable, setVariable] = useState(varName);
     const [selectedCountry, setSelectedCountry] = useState('');
-    const variableQuery = useQuery(queries[variable] || queries.population, {skip: !selectedCountry, variables: {
-      name: selectedCountry
+    console.log(!selectedCountry, queries[variable])
+    const variableQuery = useQuery(queries.population, {skip: !selectedCountry,  variables: {
+      name: selectedCountry || "Australia"
     }});
+
+    console.log(variableQuery)
    
     const countryNamesQuery = useQuery(queries.COUNTRY_NAMES_QUERY);
   
-    const isLoading = countryNamesQuery.loading;
+    const isLoading = countryNamesQuery.loading || variableQuery.loading;
 
     return {
       setVariable, setSelectedCountry, isLoading, countryNames: countryNamesQuery.data, result: variableQuery.data, refetch: variableQuery.refetch, variable
@@ -31,8 +34,8 @@ const App = () => {
     refetch({variables: {name: selectedCountry}})
   }, [refetch, selectedCountry])
 
-console.log(Object.keys(queries))
 if (!isLoading) {
+  console.log(result)
   return (
       <div className="App">
         <main>
@@ -44,9 +47,9 @@ if (!isLoading) {
                   value: key
                 }))} />
                 <div><span>of</span></div>
-                <CountryNameDropdown handleChange={({value}) => setSelectedCountry(value)} countryNames={countryNames} />
+                <CountryNameDropdown handleChange={({value}) => setSelectedCountry(value)} value={selectedCountry ? {label: selectedCountry, value: selectedCountry} : undefined} countryNames={countryNames} />
               </div>
-            <output>{result && result.country[variable]}</output>
+              {result && <Output result={result.country} />}
         </main>
       </div>
 
