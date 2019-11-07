@@ -9,10 +9,11 @@ import './App.css';
 
 const App = () => {
   const useCombinedQueries = (name, varName) => {
+    console.log(name)
     const [variable, setVariable] = useState(varName);
     const [selectedCountry, setSelectedCountry] = useState('');
-    const variableQuery = useQuery(queries[variable] || queries.population, {variables: {
-      name: selectedCountry || 'Australia'
+    const variableQuery = useQuery(queries[variable] || queries.population, {skip: !selectedCountry, variables: {
+      name: selectedCountry
     }});
    
     const countryNamesQuery = useQuery(queries.COUNTRY_NAMES_QUERY);
@@ -45,7 +46,7 @@ if (!isLoading) {
                 <div><span>of</span></div>
                 <CountryNameDropdown handleChange={({value}) => setSelectedCountry(value)} countryNames={countryNames} />
               </div>
-            <output>{result.country[variable]}</output>
+            <output>{result && result.country[variable]}</output>
         </main>
       </div>
 
