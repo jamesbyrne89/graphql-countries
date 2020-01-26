@@ -4,27 +4,37 @@ const {
   GraphQLInt,
   GraphQLList,
   GraphQLSchema
-} = require('graphql');
-const axios = require('axios');
+} = require("graphql");
+const axios = require("axios");
+
+const CurrenciesType = new GraphQLObjectType({
+  name: "CurrenciesType",
+  fields: () => ({
+    code: { type: GraphQLString },
+    name: { type: GraphQLString },
+    symbol: { type: GraphQLString }
+  })
+});
 
 const CountryType = new GraphQLObjectType({
-  name: 'CountryType',
+  name: "CountryType",
   fields: () => ({
     name: { type: GraphQLString },
     population: { type: GraphQLInt },
-    capital: { type: GraphQLString }
+    capital: { type: GraphQLString },
+    currencies: { type: GraphQLList(CurrenciesType) }
   })
 });
 
 const RootQuery = new GraphQLObjectType({
-  name: 'RootQuery',
+  name: "RootQuery",
   fields: () => ({
     countries: {
       type: new GraphQLList(CountryType),
       resolve(parent, args) {
         return (async () => {
           const response = await axios.get(
-            'https://restcountries.eu/rest/v2/all'
+            "https://restcountries.eu/rest/v2/all"
           );
           return response.data;
         })();

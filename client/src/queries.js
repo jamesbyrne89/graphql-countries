@@ -1,29 +1,42 @@
+import gql from "graphql-tag";
 
-import gql from 'graphql-tag';
-
-const COUNTRY_NAMES_QUERY = gql`
-{
-  countries {
-    name
+export const COUNTRY_NAMES_QUERY = gql`
+  {
+    countries {
+      name
+    }
   }
-}`
+`;
 
 const POPULATION_QUERY = gql`
-query country($name: String!) {
-  country(name: $name) {
-    population
+  query country($name: String!) {
+    country(name: $name) {
+      population
+    }
   }
-}`
+`;
 
 const CAPITAL_QUERY = gql`
-query country($name: String!) {
-  country(name: $name) {
-    capital
+  query country($name: String!) {
+    country(name: $name) {
+      capital
+    }
   }
-}`
+`;
+
+const CURRENCY_QUERY = gql`
+  query country($name: String!) {
+    country(name: $name) {
+      currencies {
+        name
+        code
+      }
+    }
+  }
+`;
 
 export default {
-    COUNTRY_NAMES_QUERY,
-    population: POPULATION_QUERY,
-    capital: CAPITAL_QUERY
-}
+  population: POPULATION_QUERY,
+  capital: CAPITAL_QUERY,
+  currency: CURRENCY_QUERY
+};
