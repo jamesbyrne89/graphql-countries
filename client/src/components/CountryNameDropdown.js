@@ -12,7 +12,7 @@ const CountryNameDropdown = ({
 
   return (
     <Select
-      classNamePrefix={"options-dropdown"}
+      classNamePrefix="options-dropdown"
       className="options-dropdown country-name-dropdown"
       placeholder="Choose a country"
       value={selectedCountry}

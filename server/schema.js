@@ -22,7 +22,8 @@ const CountryType = new GraphQLObjectType({
     name: { type: GraphQLString },
     population: { type: GraphQLInt },
     capital: { type: GraphQLString },
-    currencies: { type: GraphQLList(CurrenciesType) }
+    currencies: { type: GraphQLList(CurrenciesType) },
+    flag: { type: GraphQLString }
   })
 });
 

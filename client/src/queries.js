@@ -35,8 +35,17 @@ const CURRENCY_QUERY = gql`
   }
 `;
 
+const FLAG_QUERY = gql`
+  query country($name: String!) {
+    country(name: $name) {
+      flag
+    }
+  }
+`;
+
 export default {
   population: POPULATION_QUERY,
   capital: CAPITAL_QUERY,
-  currency: CURRENCY_QUERY
+  currency: CURRENCY_QUERY,
+  flag: FLAG_QUERY
 };

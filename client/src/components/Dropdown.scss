@@ -1,0 +1,32 @@
+.options-dropdown {
+  display: block;
+  width: 10em;
+  text-align: left;
+  margin: 0 1em;
+
+  &__control {
+    border-radius: 8px !important;
+    border: none !important;
+  }
+
+  &__indicator-separator {
+    display: none;
+  }
+
+  &__option {
+    &:hover {
+      background: #33d9b2;
+    }
+  }
+  &__selected-option {
+    background: orange;
+  }
+
+  &__menu {
+    margin-top: 4px !important;
+  }
+}
+
+.country-name-dropdown {
+  min-width: 20em;
+}
